@@ -1,40 +1,43 @@
-import * as React from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems } from './listItems';
-import Chart from './Chart';
-import Deposits from './Deposits';
-import Orders from './Orders';
-import { Breadcrumbs, Button, ButtonGroup, MobileStepper, useTheme } from '@mui/material';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import Icon from '@mui/material/Icon';
+import * as React from "react";
+import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import MuiDrawer from "@mui/material/Drawer";
+import Box from "@mui/material/Box";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import { mainListItems } from "./listItems";
+import {
+  Breadcrumbs,
+  Button,
+  Slider,
+} from "@mui/material";
+import Icon from "@mui/material/Icon";
+import HomeIcon from "@mui/icons-material/Home";
+import MyTabs from "./MyTabs";
 
 function Copyright(props: any) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         Vighting
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
@@ -46,51 +49,51 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
+  transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    '& .MuiDrawer-paper': {
-      position: 'relative',
-      whiteSpace: 'nowrap',
-      width: drawerWidth,
-      transition: theme.transitions.create('width', {
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  "& .MuiDrawer-paper": {
+    position: "relative",
+    whiteSpace: "nowrap",
+    width: drawerWidth,
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    boxSizing: "border-box",
+    ...(!open && {
+      overflowX: "hidden",
+      transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
+        duration: theme.transitions.duration.leavingScreen,
       }),
-      boxSizing: 'border-box',
-      ...(!open && {
-        overflowX: 'hidden',
-        transition: theme.transitions.create('width', {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
-        }),
-        width: theme.spacing(7),
-        [theme.breakpoints.up('sm')]: {
-          width: theme.spacing(9),
-        },
-      }),
-    },
-  }),
-);
+      width: theme.spacing(7),
+      [theme.breakpoints.up("sm")]: {
+        width: theme.spacing(9),
+      },
+    }),
+  },
+}));
 
 const arabicTheme = createTheme({
-  direction: 'rtl', // Right-to-left layout
+  direction: "rtl", // Right-to-left layout
   typography: {
     fontFamily: '"Arial", sans-serif', // Change the font family to one supporting Arabic
   },
@@ -99,9 +102,8 @@ const arabicTheme = createTheme({
 // -----------------------  breadcrumb --------------------------
 function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
   event.preventDefault();
-  console.info('You clicked a breadcrumb.');
+  console.info("You clicked a breadcrumb.");
 }
-
 
 export default function Dashboard() {
   const [open, setOpen] = React.useState(true);
@@ -110,27 +112,18 @@ export default function Dashboard() {
   };
 
   // ---------------------- carousel -----------------------------
-//  function ProgressMobileStepper() {
-  const theme = useTheme();
-  const [activeStep, setActiveStep] = React.useState(0);
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-// }
+  function valuetext(value: number) {
+    return `${value}°C`;
+  }
 
   return (
     <ThemeProvider theme={arabicTheme}>
-      <Box sx={{ display: 'flex' }}>
+      <Box dir="rtl" sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
-              pr: '24px', // keep right padding when drawer closed
+              pr: "24px", // keep right padding when drawer closed
             }}
           >
             <IconButton
@@ -139,8 +132,8 @@ export default function Dashboard() {
               aria-label="open drawer"
               onClick={toggleDrawer}
               sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
+                marginRight: "36px",
+                ...(open && { display: "none" }),
               }}
             >
               <MenuIcon />
@@ -153,15 +146,15 @@ export default function Dashboard() {
               sx={{ flexGrow: 1 }}
             >
               Vighting
-            </Typography>  
+            </Typography>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
               px: [1],
             }}
           >
@@ -172,124 +165,84 @@ export default function Dashboard() {
           <Divider />
           <List component="nav">
             {mainListItems}
-            {/* <Divider sx={{ my: 1 }} /> */}
-            {/* {secondaryListItems} */}
+       
           </List>
         </Drawer>
         <Box
           component="main"
           sx={{
             backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
+              theme.palette.mode === "light"
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
             flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
+            height: "100vh",
+            overflow: "auto",
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container dir="rtl" maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               {/* Chart */}
               <Grid item xs={12} md={8} lg={15}>
-                
-                  <div role="presentation" onClick={handleClick}>
-                        <Breadcrumbs aria-label="breadcrumb">
-                          <Link underline="hover" color="inherit" href="/">
-                            MUI
-                          </Link>
-                          <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/material-ui/getting-started/installation/"
-                          >
-                            Core
-                          </Link>
-                          <Link
-                            underline="hover"
-                            color="text.primary"
-                            href="/material-ui/react-breadcrumbs/"
-                            aria-current="page"
-                          >
-                            Breadcrumbs
-                          </Link>
-                        </Breadcrumbs>
-                      </div>
+                <div role="presentation" onClick={handleClick}>
+                  <Breadcrumbs aria-label="breadcrumb">
+                    <HomeIcon sx={{ fontSize: 20 }} />
+                    <Link underline="hover" color="inherit" href="/">
+                      جيولوجيا
+                    </Link>
+                    <Link
+                      underline="hover"
+                      color="inherit"
+                      href="/material-ui/getting-started/installation/"
+                    >
+                      الدروس
+                    </Link>
+                    <Link
+                      underline="hover"
+                      color="text.primary"
+                      href="/material-ui/react-breadcrumbs/"
+                      aria-current="page"
+                    >
+                      مراجعة
+                    </Link>
+                  </Breadcrumbs>
+                </div>
               </Grid>
-              
+
               <Grid item xs={12} md={8} lg={2}>
-                  <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button size='large'  startIcon={<Icon>filter_list</Icon>} />
-                  </Box>
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                  <Button size="large" startIcon={<Icon>filter_list</Icon>} />
+                </Box>
               </Grid>
 
               <Grid item xs={12} md={8} lg={10}>
-                    <MobileStepper
-                      variant="progress"
-                      steps={6}
-                      position="static"
-                      activeStep={activeStep}
-                      sx={{ maxWidth: 600, flexGrow: 1 }}
-                      nextButton={
-                        <Button size="small" onClick={handleNext} disabled={activeStep === 5}>
-                          Next
-                          {theme.direction === 'rtl' ? (
-                            <KeyboardArrowLeft />
-                          ) : (
-                            <KeyboardArrowRight />
-                          )}
-                        </Button>
-                      }
-                      backButton={
-                        <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-                          {theme.direction === 'rtl' ? (
-                            <KeyboardArrowRight />
-                          ) : (
-                            <KeyboardArrowLeft />
-                          )}
-                          Back
-                        </Button>
-                      }
-                      />
+                <Slider
+                  size="small"
+                  aria-label="Small steps"
+                  defaultValue={0.00000005}
+                  getAriaValueText={valuetext}
+                  step={0.00000001}
+                  marks
+                  min={-0.00000005}
+                  max={0.0000001}
+                  valueLabelDisplay="auto"
+                  sx={{ width: "70%" }}
+                />
               </Grid>
 
               <Grid item xs={12} md={8} lg={15}>
-              <Box
+                <Box
                   marginLeft="auto"
                   marginRight="auto"
                   marginTop="auto"
                   marginBottom="auto"
                   width="20%"
                 >
-                  <ButtonGroup
-                    disableElevation
-                    variant="contained"
-                    aria-label="Disabled button group"
-                  >
-                    <Button>Review</Button>
-                    <Button>Practice</Button>
-                </ButtonGroup>
-              </Box>
+                  <MyTabs />
+                </Box>
               </Grid>
 
-
-
-                    <Grid container spacing={3} justifyContent="center" alignItems="center" marginTop= "10px">
-                        
-                          <Grid item xs={12} md={4} lg={3}>
-                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', height: 250 }}>
-                              <Orders />
-                            </Paper>
-                          </Grid>
-                          <Grid item xs={12} md={4} lg={3}>
-                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', height: 250 }}>
-                              <Orders />
-                            </Paper>
-                          </Grid>
-                    </Grid>
-                
-         
             
             </Grid>
             <Copyright sx={{ pt: 4 }} />
@@ -297,5 +250,5 @@ export default function Dashboard() {
         </Box>
       </Box>
     </ThemeProvider>
-  );      
+  );
 }
